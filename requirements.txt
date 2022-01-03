@@ -1,2 +1,3 @@
 pyinstaller
 git+https://github.com/MideTechnology/endaq-python.git@0993403ac5ad9e0ae617be97ab6dc8e66bfbaf99#egg=endaq
+fire
