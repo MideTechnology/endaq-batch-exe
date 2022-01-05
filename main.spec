@@ -1,14 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import os
 
+HOME_DIR = os.getcwd()
 block_cipher = None
 
 
 a = Analysis(
     ["main.py"],
-    pathex=[],
+    pathex=[HOME_DIR],
     binaries=[],
-    datas=[],
+    datas=[("mide_ide.xml", "data")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -28,7 +30,8 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name="main",
+    name="endaq-batch",
+    icon=os.path.join("assets", "endaq-favicon.ico"),
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
