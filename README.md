@@ -29,3 +29,22 @@ On a Windows machine, in the cmd terminal:
 	```
 	$ python -m PyInstaller main.spec --noconfirm
 	```
+
+# Usage
+
+The executable is a CLI tool, and thus is accessible via the command line. (read: you can't just double-click the file and have it start working.)
+
+## Basic Example
+
+With `endaq-batch.exe` in the current directory, you can run the program like so from the `cmd` terminal:
+
+```
+endaq-batch.exe --accel-highpass-cutoff=None add-peaks --margin-len=100 aggregate-data "path\to\files\*.ide" - to-html-plots --show
+```
+
+This will:
+- generate a builder object with the `add_peaks` routine loaded
+- run the builder via `aggregate_data` on all IDE files in the folder "path\to\files\"
+- call `to_html_plots` on the resulting `OutputStruct`, with `show=True`
+
+For more details on what options and configurations are available, see [the docs for `endaq.batch`](https://docs.endaq.com/en/latest/endaq/batch.html)
