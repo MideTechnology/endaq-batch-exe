@@ -1,0 +1,64 @@
+name: Build an (unsigned) .exe & add it as an asset to a new release
+
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  add-exe-asset:
+    name: Build & add (unsigned) .exe asset
+
+    strategy:
+      fail-fast: true
+
+    env:
+      OS: windows-latest
+      PYTHON-VERSION: "3.9"
+
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip setuptools
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get pip cache location
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: Load pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: builddeps-${{ runner.os }}-Python3.9-pip-${{ hashFiles('**/requirements.txt', './.github/workflows/build-exe.yml') }}
+
+      - name: Install package & (test) dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Build .exe
+        run: python -O -m PyInstaller main.spec --distpath .
+
+      - name: Compress .exe into .zip
+        run: python -c "from pathlib import Path; import zipfile; zipfile.ZipFile(Path('./endaq-batch.exe.zip'), mode='w').write(Path('./endaq-batch.exe'), compress_type=zipfile.ZIP_DEFLATED)"
+
+      - name: Upload .exe as asset
+        uses: actions/upload-release-asset@ef2adfe8cb8ebfa540930c452c576b3819990faa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./endaq-batch.exe.zip
+          asset_name: endaq-batch.exe.zip
+          asset_content_type: application/zip
