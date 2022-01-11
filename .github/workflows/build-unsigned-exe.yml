@@ -45,13 +45,13 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Build .exe
-        run: python -O -m PyInstaller main.spec --distpath dist
+        run: python -O -m PyInstaller main.spec --distpath .
 
       - name: Compress .exe into .zip
-        run: python -c "from pathlib import Path; import zipfile; zipfile.ZipFile(Path('dist/endaq-batch.exe.zip'), mode='w').write(Path('dist/endaq-batch.exe'), compress_type=zipfile.ZIP_DEFLATED)"
+        run: python -c "from pathlib import Path; import zipfile; zipfile.ZipFile(Path('./endaq-batch.exe.zip'), mode='w').write(Path('./endaq-batch.exe'), compress_type=zipfile.ZIP_DEFLATED)"
 
       - name: Upload .exe as asset
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: './dist/endaq-batch.exe.zip'
+          path: './endaq-batch.exe.zip'
