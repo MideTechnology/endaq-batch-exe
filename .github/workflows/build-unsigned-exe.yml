@@ -47,8 +47,11 @@ jobs:
       - name: Build .exe
         run: python -O -m PyInstaller main.spec --distpath dist
 
+      - name: Compress .exe into .zip
+        run: python -c "from pathlib import Path; import zipfile; zipfile.ZipFile(Path('dist/endaq-batch.exe.zip'), mode='w').write(Path('dist/endaq-batch.exe'), compress_type=zipfile.ZIP_DEFLATED)"
+
       - name: Upload .exe as asset
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: './dist/endaq-batch.exe'
+          path: './dist/endaq-batch.exe.zip'
