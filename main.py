@@ -1,7 +1,19 @@
 import glob
+import os
+import inspect
 
 import fire
+import ebmlite.core
 import endaq.batch
+
+
+def self_path():
+    """Get the current working directory for this file."""
+    locally_defined_obj = lambda: None
+    return os.path.abspath(inspect.getsourcefile(locally_defined_obj))
+
+
+ebmlite.core.SCHEMA_PATH.append(os.path.dirname(self_path()))
 
 
 class CliGetDataBuilder(endaq.batch.GetDataBuilder):
