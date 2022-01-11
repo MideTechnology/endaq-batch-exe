@@ -51,7 +51,11 @@ jobs:
         run: python -c "from pathlib import Path; import zipfile; zipfile.ZipFile(Path('./endaq-batch.exe.zip'), mode='w').write(Path('./endaq-batch.exe'), compress_type=zipfile.ZIP_DEFLATED)"
 
       - name: Upload .exe as asset
-        uses: djn24/add-asset-to-release@v1
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          path: './endaq-batch.exe.zip'
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./endaq-batch.exe.zip
+          asset_name: endaq-batch.exe.zip
+          asset_content_type: application/zip
