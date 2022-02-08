@@ -39,7 +39,7 @@ The executable is a CLI tool, and thus is accessible via the command line. (read
 With `endaq-batch.exe` in the current directory, you can run the program like so from the `cmd` terminal:
 
 ```
-endaq-batch.exe --accel-highpass-cutoff=None add-peaks --margin-len=100 aggregate-data "path\to\files\*.ide" - to-html-plots --show
+endaq-batch.exe --accel-highpass-cutoff=1 - add_metrics - add-peaks 1000 - add-psd 1 --window="hann" - add-pvss 1 12 - add_pvss_halfsine_envelope - add-vc-curves 1 12 - aggregate-data "path/to/files/*.IDE" - to-html-plots --show
 ```
 
 This will:
@@ -48,3 +48,16 @@ This will:
 - call `to_html_plots` on the resulting `OutputStruct`, with `show=True`
 
 For more details on what options and configurations are available, see [the docs for `endaq.batch`](https://docs.endaq.com/en/latest/endaq/batch.html)
+
+## General Tips for CLI Usage
+The functionality provided in this CLI is spread over several function calls that chain together into a single command, which is more complicated than what a typical CLI tool provides. Because of this complexity, the user has to be somewhat careful and pedantic about how the functions are called, and how variables are passed in.
+
+Specifically, it's a good practice to **separate each function call with a dash `-`**, particularly if not all parameters for the function are explicitly specified. For examples:
+- do:
+  ```
+  ... - add-psd 1 - add-pvss 1 12 - ...
+  ```
+- do not:
+  ```
+  ... add-psd 1 add-pvss 1 12 ...
+  ```

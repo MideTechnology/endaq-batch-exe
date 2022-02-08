@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: builddeps-${{ runner.os }}-Python3.9-pip-${{ hashFiles('**/requirements.txt', './.github/workflows/build-exe.yml') }}
+          key: builddeps-${{ runner.os }}-Python3.9-pip-${{ hashFiles('**/requirements.txt', './.github/workflows/build-unsigned-exe.yml') }}
 
       - name: Install package & (test) dependencies
         run: python -m pip install -r requirements.txt

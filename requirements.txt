@@ -2,8 +2,8 @@ altgraph==0.17.2
 certifi==2021.10.8
 charset-normalizer==2.0.10
 ebmlite==3.2.1
-endaq @ git+https://github.com/MideTechnology/endaq-python.git@3190d2f5d825737a6f491f2f3ab945d03f4ace02
-fire==0.4.0
+endaq @ git+https://github.com/MideTechnology/endaq-python.git@8b971e95e10bf1248618c7c7ee53b3e562b3502d
+fire @ git+https://github.com/xavierfigueroav/python-fire.git@f9a66c7f48368cb12ae693826853991f9652fd20
 future==0.18.2
 idelib==3.2.3
 idna==3.3
